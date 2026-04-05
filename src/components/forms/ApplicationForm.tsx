@@ -96,7 +96,7 @@ export default function ApplicationForm({ isOpen, onClose }: ApplicationFormProp
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="sticky top-0 bg-primary text-white px-6 py-4 flex justify-between items-center border-b">
+            <div className="bg-primary text-white px-6 py-4 flex justify-between items-center border-b">
               <h2 className="font-cormorant text-2xl text-black text-bold font-semibold">
                 Admission Application Form
               </h2>
