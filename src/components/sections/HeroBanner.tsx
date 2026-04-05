@@ -5,9 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
 const heroImages = [
-  'hero-1.jpg',
-  'hero-2.jpg',
-  'hero-3.jpg',
+  'hero-1.jpeg',
+  'hero-3.jpeg',
 ];
 
 export default function HeroBanner() {
@@ -48,14 +47,11 @@ export default function HeroBanner() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
-          <p className="text-accent text-sm font-semibold uppercase tracking-widest mb-4">
-            CBSE Senior Secondary School
-          </p>
           <h1 className="font-cormorant text-5xl md:text-7xl font-semibold text-white mb-4 leading-tight">
             Sree Saraswathy Academy
           </h1>
           <p className="text-white text-lg md:text-xl mb-8 max-w-2xl mx-auto">
-            CBSE Affiliation No. [PLACEHOLDER] | Nurturing Excellence Since [PLACEHOLDER]
+            Matriculation School, Vedasandur, Dindigul
           </p>
 
           {/* CTA Buttons */}

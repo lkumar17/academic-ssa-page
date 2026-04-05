@@ -1,6 +1,6 @@
 # Sree Saraswathy Academy Website
 
-A modern, fully-featured CBSE school website built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **Sanity CMS**.
+A modern, fully-featured Matriculation school website built with **Next.js 14**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **Sanity CMS**.
 
 ## 🚀 Project Features
 
@@ -10,7 +10,7 @@ A modern, fully-featured CBSE school website built with **Next.js 14**, **TypeSc
 - ✅ **Admissions** page with eligibility, process steps, and dates
 - ✅ **Achievements** page with filterable gallery and board results
 - ✅ **Contact** page with branch cards and inquiry form
-- ✅ **CBSE Compliance** page with mandatory disclosures
+- ✅ **Matriculation Compliance** page with mandatory disclosures
 - ✅ **Responsive Navigation** with mobile menu
 - ✅ **Smooth Animations** using Framer Motion
 - ✅ **Premium Design** with custom color tokens
@@ -36,7 +36,7 @@ src/
 │   ├── admissions/page.tsx     # Admissions page
 │   ├── achievements/page.tsx   # Achievements page
 │   ├── contact/page.tsx        # Contact page
-│   └── compliance/page.tsx     # CBSE Compliance page
+│   └── compliance/page.tsx     # Matriculation Compliance page
 ├── components/
 │   ├── layout/
 │   │   ├── Navbar.tsx
@@ -183,7 +183,7 @@ Replace placeholder images in `/public/images/`:
 - Google Maps embed
 - WhatsApp floating button
 
-### CBSE Compliance (`/compliance`)
+### Matriculation Compliance (`/compliance`)
 - School information table
 - Downloadable compliance documents
 - Regulatory information

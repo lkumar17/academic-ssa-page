@@ -55,4 +55,11 @@ export interface NewsArticle {
       url: string;
     };
   };
+  gallery?: Array<{
+    _type: 'image';
+    asset: {
+      url: string;
+    };
+    caption?: string;
+  }>;
 }

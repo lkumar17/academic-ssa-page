@@ -5,8 +5,8 @@ import { ArrowRight } from 'lucide-react';
 
 export default function WelcomeSection() {
   return (
-    <section className="py-16 md:py-24 px-4 bg-white">
-      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+    <section className="py-4 md:py-6 px-4 bg-white">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
         {/* Left Column */}
         <motion.div
           initial={{ opacity: 0, x: -50 }}
@@ -32,15 +32,6 @@ export default function WelcomeSection() {
             celebrated.
           </p>
 
-          {/* Affiliation Badge */}
-          <div className="bg-surface px-4 py-3 rounded-lg inline-block mb-6">
-            <p className="text-sm text-text-muted">
-              <span className="font-semibold text-primary">
-                CBSE Affiliation No: [PLACEHOLDER]
-              </span>
-            </p>
-          </div>
-
           {/* Learn More Link */}
           <a
             href="/about"
@@ -51,23 +42,24 @@ export default function WelcomeSection() {
         </motion.div>
 
         {/* Right Column - Image */}
-        <motion.div
+{/*         <motion.div
           initial={{ opacity: 0, x: 50 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
           className="relative"
         >
-          <div className="relative aspect-square rounded-lg overflow-hidden">
-            {/* Frame Effect */}
-            <div className="absolute inset-0 border-4 border-accent opacity-30 rounded-lg transform translate-x-2 translate-y-2"></div>
-            <div className="relative bg-surface rounded-lg aspect-square flex items-center justify-center text-text-muted">
-              <p className="text-center">
-                [Campus Image: about-campus.jpg 1280×720px]
-              </p>
+          <div className="relative aspect-video rounded-lg overflow-hidden"
+            <div className="absolute inset-0 border-4 border-accent opacity-30 rounded-lg transform translate-x-2 translate-y-2 z-0"></div>
+            <div className="relative bg-surface rounded-lg aspect-video flex items-center justify-center text-text-muted overflow-hidden z-10">
+              <img
+                src="/images/campus-images/about-campus.jpg"
+                alt="Campus"
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
-        </motion.div>
+        </motion.div> */}
       </div>
     </section>
   );

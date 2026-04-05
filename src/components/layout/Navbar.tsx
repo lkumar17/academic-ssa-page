@@ -16,21 +16,21 @@ export default function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.5 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? 'bg-white/80 backdrop-blur-md shadow-md'
-            : 'bg-transparent'
-        }`}
+        style={{ backgroundColor: '#0a1a3c' }}
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 shadow-lg"
       >
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
-            <div className="relative w-10 h-10 bg-accent rounded">
-              <span className="text-white font-bold flex items-center justify-center h-full text-xl">
-                SSA
-              </span>
-            </div>
-            <span className="font-cormorant text-xl font-semibold text-primary hidden sm:inline">
+            <Image
+              src="/images/logo.png"
+              alt="Sree Saraswathy Academy Logo"
+              width={40}
+              height={40}
+              className="rounded"
+              priority
+            />
+            <span className="font-cormorant text-xl font-bold text-white hidden sm:inline drop-shadow">
               Sree Saraswathy Academy
             </span>
           </Link>
@@ -46,35 +46,35 @@ export default function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                className="relative group text-primary font-medium text-sm"
+                className="relative group text-white font-medium text-sm hover:text-accent transition-colors"
               >
                 {link.name}
                 <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all group-hover:w-full"></span>
               </Link>
             ))}
             <div className="relative group">
-              <button className="text-primary font-medium text-sm">More</button>
+              <button className="text-white font-medium text-sm hover:text-accent transition-colors">More</button>
               <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
                 <Link
                   href="/contact"
-                  className="block px-4 py-2 hover:bg-surface rounded-t-lg"
+                  className="block px-4 py-2 text-primary hover:bg-surface rounded-t-lg font-medium"
                 >
                   Contact Us
                 </Link>
                 <Link
                   href="/compliance"
-                  className="block px-4 py-2 hover:bg-surface rounded-b-lg"
+                  className="block px-4 py-2 text-primary hover:bg-surface rounded-b-lg font-medium"
                 >
-                  CBSE Disclosure
+                   Disclosure
                 </Link>
               </div>
             </div>
           </div>
 
-          {/* Apply Button */}
-          <button className="hidden md:block px-6 py-2 bg-accent text-white rounded font-medium text-sm hover:bg-opacity-90 transition-all">
+          {/* Apply Link */}
+          <Link href="/admissions" className="hidden md:block text-accent font-medium text-sm hover:text-white transition-colors">
             Apply Now
-          </button>
+          </Link>
 
           {/* Mobile Menu Button */}
           <button
@@ -113,11 +113,11 @@ export default function Navbar() {
                 Contact Us
               </Link>
               <Link href="/compliance" className="text-primary font-medium">
-                CBSE Disclosure
-              </Link>
-              <button className="w-full px-4 py-2 bg-accent text-white rounded font-medium mt-4">
+                 Disclosure
+              </Link> 
+              <Link href="/admissions" className="block w-full text-center px-4 py-2 bg-accent text-white rounded font-medium mt-4">
                 Apply Now
-              </button>
+              </Link>
             </div>
           </motion.div>
         )}

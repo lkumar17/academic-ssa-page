@@ -29,7 +29,7 @@ src/
 │   ├── admissions/page.tsx       → Admissions
 │   ├── achievements/page.tsx     → Achievements
 │   ├── contact/page.tsx          → Contact Us
-│   ├── compliance/page.tsx       → CBSE Disclosure
+│   ├── compliance/page.tsx       → Matriculation Disclosure
 │   └── globals.css
 ├── components/
 │   ├── layout/
@@ -64,7 +64,7 @@ src/
     │   ├── hostel.jpg            → PLACEHOLDER: Hostel facility photo (1280×720px)
     │   └── og-image.jpg          → PLACEHOLDER: Social share image (1200×630px)
     └── docs/
-        ├── affiliation-cert.pdf  → PLACEHOLDER: CBSE affiliation certificate PDF
+        ├── affiliation-cert.pdf  → PLACEHOLDER: Matriculation affiliation certificate PDF
         ├── fire-safety.pdf       → PLACEHOLDER: Fire safety certificate PDF
         ├── building-safety.pdf   → PLACEHOLDER: Building safety certificate PDF
         └── fee-structure.pdf     → PLACEHOLDER: Fee structure PDF
@@ -102,7 +102,7 @@ In src/app/globals.css, set up CSS custom properties for an elegant premium scho
 Create src/components/layout/Navbar.tsx:
 - Sticky top navbar with glass morphism effect on scroll (backdrop-blur, semi-transparent bg)
 - Left: logo image from /public/images/logo.png with school name text beside it
-- Center: navigation links → Home, About Us, Admissions, Achievements, More (dropdown with Contact Us and CBSE Disclosure)
+- Center: navigation links → Home, About Us, Admissions, Achievements, More (dropdown with Contact Us and Matriculation Disclosure)
 - Right: "Apply Now" CTA button in gold (#c8982a) with hover animation
 - Mobile: hamburger icon toggles a full-screen slide-down menu
 - Use framer-motion for navbar entrance animation and dropdown
@@ -120,7 +120,7 @@ Create src/components/sections/HeroBanner.tsx:
   /public/images/hero-1.jpg, hero-2.jpg, hero-3.jpg
 - Dark overlay gradient (bottom-heavy) over images
 - Center-aligned content:
-  - Small gold uppercase label: "CBSE Senior Secondary School"
+  - Small gold uppercase label: " Matriculation school"
   - Large display heading using Cormorant Garamond: school name
   - Subtitle: affiliation text
   - Three CTA buttons side by side: "Apply Online" (gold filled), "Call Us" (outlined), "Locate Us" (outlined)
@@ -138,9 +138,8 @@ Create src/components/sections/HeroBanner.tsx:
 Create src/components/sections/StatsBar.tsx:
 - Full-width dark navy (#1a2e5a) bar below hero
 - 4 stats displayed horizontally:
-  { value: "25+", label: "Years of Excellence" }
-  { value: "3", label: "Campuses" }
-  { value: "5000+", label: "Alumni" }
+  { value: "20+", label: "Years of Excellence" }
+  { value: "2", label: "Campuses" }
   { value: "98%", label: "Board Results" }
 - Each stat: large gold number (Cormorant Garamond 48px), small white label below
 - Animated count-up using framer-motion when scrolled into view
@@ -194,8 +193,8 @@ Create src/components/layout/Footer.tsx:
 - Dark navy background (#1a2e5a)
 - Four columns:
   1. Logo + school name + short description + social icons (Facebook, Instagram, YouTube) using lucide-react
-  2. Quick Links: Home, About Us, Admissions, Achievements, Contact, CBSE Disclosure
-  3. Branch 1 — Oddanchatram: address placeholder, phone placeholder
+  2. Quick Links: Home, About Us, Admissions, Achievements, Contact
+  3. Branch 1 — Vedasandur: address placeholder, phone placeholder
   4. Branch 2 — Palani + Branch 3 — Coimbatore condensed
 - Gold accent color for headings and hover states
 - Bottom bar: copyright text + "Designed with care" note
@@ -251,21 +250,21 @@ Create src/app/achievements/page.tsx:
 
 ```
 Create src/app/contact/page.tsx:
-- Three branch cards at top: Oddanchatram, Palani, Coimbatore — each with address placeholder, phone placeholder, email placeholder
+- Three branch cards at top: Vedasandur, Palani, Coimbatore — each with address placeholder, phone placeholder, email placeholder
 - Enquiry form below: Name, Phone, Email, Grade Interested In (select), Message — with client-side validation
-- Google Maps iframe placeholder for Oddanchatram branch (replace src with real embed URL later)
+- Google Maps iframe placeholder for Vedasandur branch (replace src with real embed URL later)
 - Form submits to a mailto: link as placeholder (real EmailJS integration can be added later)
 - WhatsApp floating button (bottom-right) linking to wa.me/placeholder
 ```
 
 ---
 
-### Prompt 12 — CBSE Compliance Page
+### Prompt 12 — Matriculation Compliance Page
 
 ```
 Create src/app/compliance/page.tsx:
-- Page title "CBSE Mandatory Disclosure"
-- Intro paragraph about CBSE affiliation requirements
+- Page title "Matriculation Mandatory Disclosure"
+- Intro paragraph about Matriculation affiliation requirements
 - Document table with columns: Document Name, Description, Download Link
 - Rows for: Affiliation Certificate, Fire Safety, Building Safety Certificate, Water & Sanitation, DEO Certificate, Land Certificate, Fee Structure
 - Each row links to corresponding PDF in /public/docs/
@@ -334,12 +333,12 @@ Once real assets are ready, replace these across the project:
 | `achievement-1/2.jpg` | `/public/images/` | Achievement event photos |
 | `hostel.jpg` | `/public/images/` | Hostel facility photo |
 | `og-image.jpg` | `/public/images/` | Social share image (1200×630px) |
-| `affiliation-cert.pdf` | `/public/docs/` | Real CBSE affiliation certificate |
+| `affiliation-cert.pdf` | `/public/docs/` | Real Matriculation affiliation certificate |
 | `fire-safety.pdf` | `/public/docs/` | Real fire safety certificate |
 | `building-safety.pdf` | `/public/docs/` | Real building safety certificate |
 | `fee-structure.pdf` | `/public/docs/` | Real fee structure document |
 | `[SCHOOL NAME]` | All pages | Official school name |
-| `[AFFILIATION NO]` | Home, Compliance | Real CBSE affiliation number |
+| `[AFFILIATION NO]` | Home, Compliance | Real Matriculation affiliation number |
 | `[PHONE PLACEHOLDER]` | Footer, Contact | Real phone numbers per branch |
 | `[ADDRESS PLACEHOLDER]` | Footer, Contact | Real branch addresses |
 | `Google Form URL` | Admissions page | Real Google Form application link |
@@ -396,7 +395,7 @@ Once content is added in Sanity Studio, Vercel ISR automatically rebuilds the af
 | Achievement photos | JPG | 800×600px | Event or award ceremony shots |
 | Hostel photo | JPG | 1280×720px | Facility interior/exterior |
 | OG share image | JPG | 1200×630px | Used for WhatsApp/social previews |
-| CBSE documents | PDF | Any | Official stamped copies |
+| Matriculation documents | PDF | Any | Official stamped copies |
 
 ---
 

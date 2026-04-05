@@ -5,10 +5,9 @@ import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 const stats = [
-  { value: '25+', label: 'Years of Excellence' },
-  { value: '3', label: 'Campuses' },
-  { value: '5000+', label: 'Alumni' },
-  { value: '98%', label: 'Board Results' },
+  { value: '20+', label: 'Years of Excellence' },
+  { value: '2', label: 'Campuses' },
+  { value: '90%', label: 'Board Results' },
 ];
 
 export default function StatsBar() {
@@ -39,7 +38,7 @@ export default function StatsBar() {
   return (
     <div
       ref={ref}
-      className="w-full bg-primary py-12 grid grid-cols-2 md:grid-cols-4 gap-8 px-4"
+      className="w-full bg-primary py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 px-4"
     >
       {stats.map((stat, i) => (
         <motion.div
@@ -53,7 +52,7 @@ export default function StatsBar() {
           <p className="font-cormorant text-4xl md:text-5xl font-semibold text-accent mb-2">
             {stat.value}
           </p>
-          <p className="text-white/80 text-sm md:text-base font-medium">
+          <p className="font-cormorant text-sm md:text-base font-medium">
             {stat.label}
           </p>
         </motion.div>

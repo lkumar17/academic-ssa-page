@@ -39,5 +39,25 @@ export default {
         hotspot: true,
       },
     },
+    {
+      name: 'gallery',
+      title: 'Image Gallery',
+      type: 'array',
+      of: [
+        {
+          type: 'image',
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            {
+              name: 'caption',
+              title: 'Caption',
+              type: 'string',
+            },
+          ],
+        },
+      ],
+    },
   ],
 };

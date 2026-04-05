@@ -9,7 +9,7 @@ export default function CompliancePage() {
   const documents = [
     {
       name: 'Affiliation Certificate',
-      description: 'CBSE affiliation certificate for Sree Saraswathy Academy',
+      description: 'Matriculation affiliation certificate for Sree Saraswathy Academy',
       file: 'affiliation-cert.pdf',
     },
     {
@@ -46,34 +46,33 @@ export default function CompliancePage() {
 
   const schoolInfo = [
     { label: 'School Name', value: 'Sree Saraswathy Academy' },
-    { label: 'CBSE Affiliation No.', value: '[PLACEHOLDER]' },
     { label: 'Principal Name', value: 'Dr. [PLACEHOLDER NAME]' },
     { label: 'Contact Phone', value: '+91 [PLACEHOLDER]' },
     { label: 'Email', value: 'info@saiaca.in' },
     { label: 'Address', value: '[PLACEHOLDER: Main Branch Address]' },
     { label: 'Established Year', value: '[PLACEHOLDER]' },
-    { label: 'Board', value: 'Central Board of Secondary Education (CBSE)' },
+    { label: 'Board', value: 'Matriculation' },
   ];
 
   return (
     <>
       <Navbar />
-      <div className="pt-16">
+      <div className="pt-4">
         {/* Hero Section */}
-        <div className="min-h-80 bg-gradient-to-b from-primary to-primary/80 text-white flex items-center justify-center">
+        <div className="min-h-60 bg-gradient-to-b from-primary to-primary/80 text-white flex items-center justify-center">
           <div className="text-center px-4">
-            <h1 className="font-cormorant text-4xl md:text-5xl font-semibold mb-4">
-              CBSE Mandatory Disclosure
+            <h1 className="text-black font-cormorant text-4xl md:text-5xl font-semibold mb-4">
+              Mandatory Disclosure
             </h1>
-            <p className="text-lg text-white/80">Transparency & Compliance</p>
+            <p className="text-lg text-black/80">Transparency & Compliance</p>
           </div>
         </div>
 
         {/* Info Section */}
-        <section className="py-12 px-4 bg-surface">
+        <section className="py-2 px-4 bg-surface">
           <div className="max-w-4xl mx-auto text-center">
             <p className="text-text-muted leading-relaxed">
-              As per CBSE guidelines on mandatory disclosure, Sree Saraswathy Academy maintains complete
+              As per Matriculation guidelines on mandatory disclosure, Sree Saraswathy Academy maintains complete
               transparency in all regulatory compliances and institutional information. All
               required certificates, approvals, and documents are available for public inspection.
             </p>
@@ -81,9 +80,9 @@ export default function CompliancePage() {
         </section>
 
         {/* School Information Table */}
-        <section className="py-16 md:py-24 px-4">
+        <section className="py-4 md:py-6 px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="font-cormorant text-3xl font-semibold text-primary mb-8">
+            <h2 className="font-cormorant text-3xl font-semibold text-primary mb-3">
               School Information
             </h2>
 
@@ -97,10 +96,10 @@ export default function CompliancePage() {
                         i % 2 === 0 ? 'bg-surface' : 'bg-white'
                       }`}
                     >
-                      <td className="px-6 py-4 font-semibold text-primary w-1/3">
+                      <td className="px-4 py-2 font-semibold text-primary w-1/3">
                         {item.label}
                       </td>
-                      <td className="px-6 py-4 text-text-muted">
+                      <td className="px-4 py-2 text-text-muted">
                         {item.value}
                       </td>
                     </tr>
@@ -112,9 +111,9 @@ export default function CompliancePage() {
         </section>
 
         {/* Documents */}
-        <section className="py-16 md:py-24 px-4 bg-surface">
+        <section className="py-6 md:py-8 px-4 bg-surface">
           <div className="max-w-5xl mx-auto">
-            <h2 className="font-cormorant text-3xl font-semibold text-primary mb-8">
+            <h2 className="font-cormorant text-3xl font-semibold text-primary mb-4">
               Required Documents
             </h2>
 
@@ -126,10 +125,10 @@ export default function CompliancePage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.05 }}
-                  className="bg-white rounded-lg p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4 hover:shadow-lg transition-all"
+                  className="bg-white rounded-lg p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-2 hover:shadow-lg transition-all"
                 >
                   <div className="flex-1">
-                    <h3 className="font-semibold text-primary mb-1">
+                    <h3 className="font-semibold text-primary mb-0.5">
                       {doc.name}
                     </h3>
                     <p className="text-text-muted text-sm">{doc.description}</p>
@@ -137,7 +136,7 @@ export default function CompliancePage() {
                   <a
                     href={`/docs/${doc.file}`}
                     download
-                    className="flex items-center gap-2 px-4 py-2 bg-accent text-white rounded font-medium hover:bg-opacity-90 transition-all whitespace-nowrap"
+                    className="flex items-center gap-2 px-4 py-2 bg-accent text-black rounded font-medium hover:bg-opacity-90 transition-all whitespace-nowrap"
                   >
                     <Download size={18} />
                     Download
@@ -149,13 +148,13 @@ export default function CompliancePage() {
         </section>
 
         {/* Additional Information */}
-        <section className="py-16 md:py-24 px-4">
+        <section className="py-4 md:py-6 px-4">
           <div className="max-w-4xl mx-auto">
-            <h2 className="font-cormorant text-3xl font-semibold text-primary mb-8">
+            <h2 className="font-cormorant text-3xl font-semibold text-primary mb-3">
               Additional Information
             </h2>
 
-            <div className="space-y-6 text-text-muted leading-relaxed">
+            <div className="space-y-3 text-text-muted leading-relaxed">
               <div>
                 <h3 className="font-semibold text-primary mb-2">Facilities</h3>
                 <p>
@@ -168,7 +167,7 @@ export default function CompliancePage() {
               <div>
                 <h3 className="font-semibold text-primary mb-2">Curriculum</h3>
                 <p>
-                  The school follows CBSE curriculum with a focus on experiential learning,
+                  The school follows Matriculation curriculum with a focus on experiential learning,
                   critical thinking, and holistic development. Special emphasis is given to
                   co-curricular activities and skill development.
                 </p>
@@ -204,13 +203,13 @@ export default function CompliancePage() {
         </section>
 
         {/* Contact Section */}
-        <section className="py-12 px-4 bg-primary text-white text-center">
+        <section className="py-6 px-4 bg-primary text-white text-center">
           <div className="max-w-4xl mx-auto">
-            <h3 className="font-cormorant text-2xl font-semibold mb-4">
+            <h3 className="text-black font-cormorant text-2xl font-semibold mb-4">
               For Further Clarifications
             </h3>
-            <p className="mb-4">Contact the School Office:</p>
-            <div className="space-y-2 text-sm">
+            <p className="text-black/80 mb-4">Contact the School Office:</p>
+            <div className="text-black/80 space-y-2 text-sm">
               <p>📞 Phone: +91 [PLACEHOLDER]</p>
               <p>📧 Email: info@saiaca.in</p>
               <p>🕐 Office Hours: 9:00 AM - 4:00 PM (Monday to Friday)</p>
