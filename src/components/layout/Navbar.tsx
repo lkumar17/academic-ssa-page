@@ -72,7 +72,7 @@ export default function Navbar() {
           </div>
 
           {/* Apply Link */}
-          <Link href="/admissions" className="hidden md:block text-accent font-medium text-sm hover:text-white transition-colors">
+          <Link href="/admissions" className="text-accent font-medium text-sm text-white">
             Apply Now
           </Link>
 

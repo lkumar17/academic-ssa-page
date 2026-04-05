@@ -43,7 +43,7 @@ export default function AdmissionsPage() {
   return (
     <>
       <Navbar onApplyClick={() => setIsFormOpen(true)} />
-      <div className="pt-8">
+      <div className="pt-12">
         {/* Hero Section */}
         <div className="relative min-h-60 bg-gradient-to-b from-accent via-accent/90 to-accent/70 text-white flex items-center justify-center overflow-hidden">
           {/* Decorative gradient overlay */}
@@ -243,7 +243,7 @@ export default function AdmissionsPage() {
               <p className="text-text-muted mb-6">
                 Download our complete fee structure document for all grades and branches.
               </p>
-              <button className="w-full px-6 py-3 bg-accent text-white rounded font-medium hover:bg-opacity-90 transition-all inline-flex items-center justify-center gap-2">
+              <button className="w-full px-6 py-3 bg-accent text-black rounded font-medium hover:bg-opacity-90 transition-all inline-flex items-center justify-center gap-2">
                 <Download size={18} />
                 Download PDF
               </button>
@@ -265,7 +265,7 @@ export default function AdmissionsPage() {
               </p>
               <button 
                 onClick={() => setIsFormOpen(true)}
-                className="w-full px-6 py-3 bg-primary text-white rounded font-medium hover:bg-opacity-90 transition-all"
+                className="w-full px-6 py-3 bg-primary text-black rounded font-medium hover:bg-opacity-90 transition-all"
               >
                 Online Application
               </button>

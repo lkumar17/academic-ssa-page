@@ -279,8 +279,6 @@ export default function ApplicationForm({ isOpen, onClose }: ApplicationFormProp
                       <option value="Class VIII">Class VIII</option>
                       <option value="Class IX">Class IX</option>
                       <option value="Class X">Class X</option>
-                      <option value="Class XI">Class XI</option>
-                      <option value="Class XII">Class XII</option>
                       <option value="Nursery">Nursery</option>
                       <option value="KG">KG</option>
                     </select>
