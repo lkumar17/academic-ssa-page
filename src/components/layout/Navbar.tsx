@@ -6,7 +6,11 @@ import Image from 'next/image';
 import { Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export default function Navbar() {
+interface NavbarProps {
+  onApplyClick?: () => void;
+}
+
+export default function Navbar({ onApplyClick }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -72,9 +76,18 @@ export default function Navbar() {
           </div>
 
           {/* Apply Link */}
-          <Link href="/admissions" className="text-accent font-medium text-sm text-white">
-            Apply Now
-          </Link>
+          {onApplyClick ? (
+            <button 
+              onClick={onApplyClick}
+              className="text-accent font-medium text-sm text-white hover:opacity-80 transition-opacity"
+            >
+              Apply Now
+            </button>
+          ) : (
+            <Link href="/admissions" className="text-accent font-medium text-sm text-white">
+              Apply Now
+            </Link>
+          )}
 
           {/* Mobile Menu Button */}
           <button
