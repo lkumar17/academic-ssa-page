@@ -24,6 +24,9 @@ export interface Achievement {
   year: number;
   category: 'academic' | 'sports' | 'cultural';
   description?: string;
+  slug?: {
+    current: string;
+  };
   image?: {
     asset: {
       url: string;

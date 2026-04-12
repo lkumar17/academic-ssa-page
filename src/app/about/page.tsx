@@ -1,17 +1,113 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { motion } from 'framer-motion';
 import { Award, Users, Zap, Heart } from 'lucide-react';
+import { client, urlFor } from '@/lib/sanity';
+
+interface CoreValue {
+  title: string;
+  description: string;
+}
+
+interface AboutPageContent {
+  coreValues: CoreValue[];
+  visionTitle: string;
+  visionContent: string;
+  missionTitle: string;
+  missionContent: string;
+}
+
+interface PrincipalMessage {
+  principalName: string;
+  principalQuote: string;
+  principalMessage: string;
+  principalPhoto: any;
+}
+
+interface TeamMember {
+  _id: string;
+  name: string;
+  role: string;
+  photo: any;
+  order: number;
+}
 
 export default function AboutPage() {
-  const values = [
-    { icon: Award, title: 'Academic Excellence', desc: 'Rigorous curriculum with personalized learning.' },
-    { icon: Users, title: 'Holistic Development', desc: 'Character building and life skills training.' },
-    { icon: Zap, title: 'Innovation', desc: 'Modern teaching methods and technology integration.' },
-    { icon: Heart, title: 'Integrity', desc: 'Ethical values and moral responsibility.' },
-  ];
+  const [aboutContent, setAboutContent] = useState<AboutPageContent | null>(null);
+  const [principal, setPrincipal] = useState<PrincipalMessage | null>(null);
+  const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchContent = async () => {
+      try {
+        // Fetch about page content
+        const aboutQuery = `*[_type == "aboutPageContent"][0] {
+          coreValues,
+          visionTitle,
+          visionContent,
+          missionTitle,
+          missionContent
+        }`;
+        const aboutData = await client.fetch<AboutPageContent>(aboutQuery);
+        setAboutContent(aboutData);
+
+        // Fetch principal message
+        const principalQuery = `*[_type == "principalMessage"][0] {
+          principalName,
+          principalQuote,
+          principalMessage,
+          principalPhoto
+        }`;
+        const principalData = await client.fetch<PrincipalMessage>(principalQuery);
+        setPrincipal(principalData);
+
+        // Fetch team members ordered by order field
+        const teamQuery = `*[_type == "managementTeamMember"] | order(order asc) {
+          _id,
+          name,
+          role,
+          photo,
+          order
+        }`;
+        const teamData = await client.fetch<TeamMember[]>(teamQuery);
+        setTeamMembers(teamData);
+      } catch (err) {
+        console.error('Failed to fetch about page content:', err);
+        setError('Failed to load content');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchContent();
+  }, []);
+
+  if (loading) return (
+    <>
+      <Navbar />
+      <div className="pt-12 min-h-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+      <Footer />
+    </>
+  );
+
+  if (error) return (
+    <>
+      <Navbar />
+      <div className="pt-12 min-h-screen flex items-center justify-center text-red-600">
+        <p>Error: {error}</p>
+      </div>
+      <Footer />
+    </>
+  );
+
+  const defaultValues = aboutContent?.coreValues || [];
 
   return (
     <>
@@ -73,12 +169,10 @@ export default function AboutPage() {
             >
               <p className="text-accent text-sm font-semibold uppercase tracking-widest mb-3">Our Vision</p>
               <h3 className="font-cormorant text-2xl font-semibold text-primary mb-6">
-                Leading the Future of Education
+                {aboutContent?.visionTitle || 'Loading...'}
               </h3>
               <p className="text-text-muted leading-relaxed text-lg">
-                To be a leading institution that nurtures academically excellent, morally strong,
-                and socially responsible individuals who contribute positively to society and shape
-                the future with innovation and integrity.
+                {aboutContent?.visionContent || 'Loading...'}
               </p>
             </motion.div>
 
@@ -92,12 +186,10 @@ export default function AboutPage() {
             >
               <p className="text-accent text-sm font-semibold uppercase tracking-widest mb-3">Our Mission</p>
               <h3 className="font-cormorant text-2xl font-semibold text-primary mb-6">
-                Empowering Every Student
+                {aboutContent?.missionTitle || 'Loading...'}
               </h3>
               <p className="text-text-muted leading-relaxed text-lg">
-                To provide comprehensive education that blends academic rigor with character
-                development, empowering students to think critically, act responsibly, and inspire
-                others through exemplary conduct and achievement.
+                {aboutContent?.missionContent || 'Loading...'}
               </p>
             </motion.div>
           </div>
@@ -112,11 +204,19 @@ export default function AboutPage() {
               viewport={{ once: true }}
               className="text-center"
             >
-              <div className="w-48 h-48 mx-auto bg-surface rounded-full flex items-center justify-center mb-4 text-text-muted">
-                [Principal Photo: 400×400px]
-              </div>
+              {principal?.principalPhoto ? (
+                <img
+                  src={urlFor(principal.principalPhoto).url()}
+                  alt={principal.principalName}
+                  className="w-48 h-48 mx-auto rounded-full object-cover mb-4"
+                />
+              ) : (
+                <div className="w-48 h-48 mx-auto bg-surface rounded-full flex items-center justify-center mb-4 text-text-muted">
+                  [Photo Loading...]
+                </div>
+              )}
               <h4 className="font-cormorant text-xl font-semibold text-primary">
-                 Miruthula
+                {principal?.principalName || 'Loading...'}
               </h4>
               <p className="text-accent text-sm">Principal</p>
             </motion.div>
@@ -130,17 +230,10 @@ export default function AboutPage() {
                 Principal's Message
               </p>
               <p className="font-cormorant text-3xl font-semibold text-primary mb-4 leading-relaxed">
-                "Education is not just about acquiring knowledge; it's about transforming lives."
+                "{principal?.principalQuote || 'Loading...'}"
               </p>
               <p className="text-text-muted leading-relaxed mb-4">
-                At Sree Saraswathy Academy, we believe in creating an environment where every student is
-                valued and empowered to reach their full potential. Our dedicated team works
-                tirelessly to ensure that education transcends the classroom and prepares students
-                for real-world challenges.
-              </p>
-              <p className="text-text-muted leading-relaxed">
-                With best-in-class facilities, innovative teaching methods, and a commitment to
-                holistic development, we are proud to be a beacon of excellence in education.
+                {principal?.principalMessage || 'Loading...'}
               </p>
             </motion.div>
           </div>
@@ -162,8 +255,9 @@ export default function AboutPage() {
             </motion.div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {values.map((value, i) => {
-                const Icon = value.icon;
+              {defaultValues.map((value, i) => {
+                const icons = [Award, Users, Zap, Heart];
+                const Icon = icons[i % icons.length];
                 return (
                   <motion.div
                     key={i}
@@ -183,7 +277,7 @@ export default function AboutPage() {
                     <h3 className="font-cormorant text-lg font-semibold text-primary mb-3 group-hover:text-accent transition-colors duration-300">
                       {value.title}
                     </h3>
-                    <p className="text-text-muted text-sm leading-relaxed">{value.desc}</p>
+                    <p className="text-text-muted text-sm leading-relaxed">{value.description}</p>
                   </motion.div>
                 );
               })}
@@ -199,23 +293,33 @@ export default function AboutPage() {
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {[1, 2, 3].map((i) => (
+              {teamMembers.map((member, i) => (
                 <motion.div
-                  key={i}
+                  key={member._id}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1 }}
                   className="text-center"
                 >
-                  <div className="w-40 h-40 mx-auto bg-surface rounded-lg flex items-center justify-center mb-4 text-text-muted">
-                    [Staff Photo: 400×400px]
-                  </div>
+                  {member.photo ? (
+                    <img
+                      src={urlFor(member.photo).url()}
+                      alt={member.name}
+                      className="w-40 h-40 mx-auto rounded-lg object-cover mb-4"
+                    />
+                  ) : (
+                    <div className="w-40 h-40 mx-auto bg-surface rounded-lg flex items-center justify-center mb-4 text-text-muted">
+                      [Photo Loading...]
+                    </div>
+                  )}
                   <h4 className="font-cormorant text-lg font-semibold text-primary">
-                    [PLACEHOLDER NAME]
+                    {member.name}
                   </h4>
                   <p className="text-accent text-sm">
-                    {i === 1 ? 'Vice Principal' : i === 2 ? 'Academic Head' : 'Admin Head'}
+                    {member.role === 'vice_principal' && 'Vice Principal'}
+                    {member.role === 'academic_head' && 'Academic Head'}
+                    {member.role === 'admin_head' && 'Admin Head'}
                   </p>
                 </motion.div>
               ))}

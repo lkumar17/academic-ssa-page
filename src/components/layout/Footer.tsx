@@ -2,8 +2,36 @@
 
 import Link from 'next/link';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { client } from '@/lib/sanity';
+
+interface SchoolInfo {
+  schoolName?: string;
+  address?: string;
+  contactPhone?: string;
+  email?: string;
+}
 
 export default function Footer() {
+  const [schoolInfo, setSchoolInfo] = useState<SchoolInfo | null>(null);
+
+  useEffect(() => {
+    async function fetchSchoolInfo() {
+      try {
+        const query = `*[_type == "schoolInformation"][0] {
+          schoolName,
+          address,
+          contactPhone,
+          email
+        }`;
+        const data = await client.fetch<SchoolInfo>(query);
+        setSchoolInfo(data);
+      } catch (error) {
+        console.error('Failed to fetch school information:', error);
+      }
+    }
+    fetchSchoolInfo();
+  }, []);
   return (
     <footer style={{ backgroundColor: '#0a1a3c' }} className="text-white">
       <div className="max-w-7xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -57,28 +85,28 @@ export default function Footer() {
           </nav>
         </div>
 
-        {/* Column 3: Vedasandur Branch */}
+        {/* Column 3: Contact Information */}
         <div>
           <h4 className="font-cormorant text-lg font-semibold mb-4 text-accent">
-            Vedasandur
+            Contact
           </h4>
           <div className="text-sm space-y-3">
             <div className="flex gap-2">
               <MapPin size={16} className="flex-shrink-0 mt-0.5" />
               <p>
-                 Vedasandur Branch Address, Tamilnadu - 624002
+                {schoolInfo?.address || 'Campus Address'}
               </p>
             </div>
             <div className="flex gap-2">
               <Phone size={16} className="flex-shrink-0" />
-              <a href="tel:" className="hover:text-accent">
-                +91 0123456789
+              <a href={`tel:${schoolInfo?.contactPhone}`} className="hover:text-accent">
+                {schoolInfo?.contactPhone || '+91 0123456789'}
               </a>
             </div>
             <div className="flex gap-2">
               <Mail size={16} className="flex-shrink-0" />
-              <a href="mailto:" className="hover:text-accent">
-                 ssacademy@gmail.com
+              <a href={`mailto:${schoolInfo?.email}`} className="hover:text-accent">
+                {schoolInfo?.email || 'info@school.in'}
               </a>
             </div>
           </div>

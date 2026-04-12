@@ -4,7 +4,8 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
-import { Trophy, Medal } from 'lucide-react';
+import { Trophy, Medal, ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 import { client } from '@/lib/sanity';
 import { Achievement } from '@/types';
 
@@ -15,6 +16,7 @@ const ACHIEVEMENTS_QUERY = `*[_type == "achievement"] | order(year desc, _create
   year,
   category,
   description,
+  slug,
   image {
     asset->{
       url
@@ -101,7 +103,7 @@ export default function AchievementsPage() {
   return (
     <>
       <Navbar />
-      <div className="pt-12">
+      <div className="pt-16">
         {/* Hero Section */}
         <div className="relative min-h-60 bg-gradient-to-b from-primary via-primary to-primary/70 text-white flex items-center justify-center overflow-hidden">
           {/* Decorative gradient overlay */}
@@ -240,6 +242,16 @@ export default function AchievementsPage() {
                       <p className="text-text-muted text-sm leading-relaxed line-clamp-3">
                         {item.description}
                       </p>
+
+                      {item.slug?.current && (
+                        <Link
+                          href={`/achievements/${item.slug.current}`}
+                          className="inline-flex items-center gap-2 text-accent hover:text-accent/80 font-medium text-sm transition-colors mt-4 group-hover:gap-3"
+                        >
+                          Read More
+                          <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+                        </Link>
+                      )}
                     </div>
                   </motion.div>
                 ))}

@@ -5,40 +5,100 @@ import Footer from '@/components/layout/Footer';
 import ApplicationForm from '@/components/forms/ApplicationForm';
 import { motion } from 'framer-motion';
 import { CheckCircle, Download } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { client } from '@/lib/sanity';
+
+interface ClassInfo {
+  _id: string;
+  grade: string;
+  criteria: string;
+  order: number;
+}
+
+interface ProcessStep {
+  _id: string;
+  step: number;
+  title: string;
+  description: string;
+}
+
+interface ImportantDate {
+  _id: string;
+  event: string;
+  date: string;
+  order: number;
+}
 
 export default function AdmissionsPage() {
   const [isFormOpen, setIsFormOpen] = useState(false);
-  const eligibility = [
-    {
-      grade: 'Primary (Class I-V)',
-      criteria: 'Age-appropriate admission based on DoB. Interview with parents.',
-    },
-    {
-      grade: 'Upper Primary (Class VI-VIII)',
-      criteria: 'Entrance assessment and interview. Previous academics considered.',
-    },
-    {
-      grade: 'Secondary (Class IX-X)',
-      criteria: 'Entrance exam and interview. Merit-based selection.',
-    }
-  ];
+  const [eligibility, setEligibility] = useState<ClassInfo[]>([]);
+  const [process, setProcess] = useState<ProcessStep[]>([]);
+  const [dates, setDates] = useState<ImportantDate[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const process = [
-    { step: 1, title: 'Apply', desc: 'Submit online application with required documents.' },
-    { step: 2, title: 'Review', desc: 'Application review and preliminary assessment.' },
-    { step: 3, title: 'Interview', desc: 'Student and parent interview with faculty.' },
-    { step: 4, title: 'Confirm', desc: 'Result notification and admission confirmation.' },
-  ];
+  useEffect(() => {
+    const fetchAdmissionData = async () => {
+      try {
+        // Fetch eligibility criteria
+        const eligibilityQuery = `*[_type == "admissionClassInfo"] | order(order asc) {
+          _id,
+          grade,
+          criteria,
+          order
+        }`;
+        const eligibilityData = await client.fetch<ClassInfo[]>(eligibilityQuery);
+        setEligibility(eligibilityData);
 
-  const dates = [
-    { event: 'Application Window Opens', date: '[PLACEHOLDER]' },
-    { event: 'Application Deadline', date: '[PLACEHOLDER]' },
-    { event: 'Entrance Exam', date: '[PLACEHOLDER]' },
-    { event: 'Interview Rounds', date: '[PLACEHOLDER]' },
-    { event: 'Results Announced', date: '[PLACEHOLDER]' },
-    { event: 'Session Begins', date: '[PLACEHOLDER]' },
-  ];
+        // Fetch admission process steps
+        const processQuery = `*[_type == "admissionProcessStep"] | order(step asc) {
+          _id,
+          step,
+          title,
+          description
+        }`;
+        const processData = await client.fetch<ProcessStep[]>(processQuery);
+        setProcess(processData);
+
+        // Fetch important dates
+        const datesQuery = `*[_type == "admissionImportantDate"] | order(order asc) {
+          _id,
+          event,
+          date,
+          order
+        }`;
+        const datesData = await client.fetch<ImportantDate[]>(datesQuery);
+        setDates(datesData);
+      } catch (err) {
+        console.error('Failed to fetch admission data:', err);
+        setError('Failed to load admission information');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAdmissionData();
+  }, []);
+
+  if (loading) return (
+    <>
+      <Navbar />
+      <div className="pt-12 min-h-screen flex items-center justify-center">
+        <p>Loading...</p>
+      </div>
+      <Footer />
+    </>
+  );
+
+  if (error) return (
+    <>
+      <Navbar />
+      <div className="pt-12 min-h-screen flex items-center justify-center text-red-600">
+        <p>Error: {error}</p>
+      </div>
+      <Footer />
+    </>
+  );
 
   return (
     <>
@@ -183,7 +243,7 @@ export default function AdmissionsPage() {
                     </h3>
                     
                     <p className="text-text-muted text-sm leading-relaxed flex-grow">
-                      {item.desc}
+                      {item.description}
                     </p>
 
                     {i < process.length - 1 && (
@@ -212,14 +272,20 @@ export default function AdmissionsPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {dates.map((item, i) => (
                 <motion.div
-                  key={i}
+                  key={item._id}
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
                   className="flex justify-between items-center p-4 bg-white rounded border-b-2 border-accent"
                 >
                   <p className="font-semibold text-primary">{item.event}</p>
-                  <p className="text-accent font-bold">{item.date}</p>
+                  <p className="text-accent font-bold">
+                    {new Date(item.date).toLocaleDateString('en-IN', { 
+                      day: 'numeric', 
+                      month: 'short', 
+                      year: 'numeric' 
+                    })}
+                  </p>
                 </motion.div>
               ))}
             </div>

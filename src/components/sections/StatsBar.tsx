@@ -3,37 +3,45 @@
 import { useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { client } from '@/lib/sanity';
 
-const stats = [
-  { value: '20+', label: 'Years of Excellence' },
-  { value: '2', label: 'Campuses' },
-  { value: '90%', label: 'Board Results' },
-];
+interface Stat {
+  value: string;
+  label: string;
+  order: number;
+}
 
 export default function StatsBar() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const [counts, setCounts] = useState([0, 0, 0, 0]);
+  const [stats, setStats] = useState<Stat[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!isInView) return;
+    const fetchStats = async () => {
+      try {
+        const query = `*[_type == "schoolStats"] | order(order asc) {
+          value,
+          label,
+          order
+        }`;
+        const data = await client.fetch<Stat[]>(query);
+        setStats(data);
+      } catch (err) {
+        console.error('Failed to fetch stats:', err);
+        setError('Failed to load statistics');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    const targets = [25, 3, 5000, 98];
-    const animations = targets.map((target) => {
-      let current = 0;
-      const increment = target / 50;
-      const interval = setInterval(() => {
-        current += increment;
-        if (current >= target) {
-          current = target;
-          clearInterval(interval);
-        }
-      }, 30);
-      return () => clearInterval(interval);
-    });
+    fetchStats();
+  }, []);
 
-    return () => animations.forEach((fn) => fn());
-  }, [isInView]);
+  if (loading) return <div className="w-full bg-primary py-4 text-center text-white">Loading...</div>;
+  if (error) return <div className="w-full bg-primary py-4 text-center text-red-300">Error: {error}</div>;
+  if (!stats.length) return <div className="w-full bg-primary py-4 text-center text-white">No statistics available</div>;
 
   return (
     <div

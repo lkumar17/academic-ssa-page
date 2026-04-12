@@ -3,41 +3,75 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import { client } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 
-const heroImages = [
-  'hero-1.jpeg',
-  'hero-3.jpeg',
-];
+interface HeroImage {
+  _key: string;
+  asset: {
+    _ref: string;
+  };
+}
+
+interface HeroCarousel {
+  images: HeroImage[];
+}
 
 export default function HeroBanner() {
   const [current, setCurrent] = useState(0);
+  const [heroImages, setHeroImages] = useState<HeroImage[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const fetchHeroImages = async () => {
+      try {
+        const query = `*[_type == "heroCarousel"] | order(order asc) [0] {
+          images
+        }`;
+        const data = await client.fetch<HeroCarousel>(query);
+        if (data?.images) {
+          setHeroImages(data.images);
+        }
+      } catch (error) {
+        console.error('Failed to fetch hero images:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHeroImages();
+  }, []);
+
+  useEffect(() => {
+    if (heroImages.length === 0) return;
+    
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % heroImages.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [heroImages]);
 
   return (
     <div className="relative h-screen w-full overflow-hidden pt-16">
       <AnimatePresence mode="wait">
-        <motion.div
-          key={current}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url(/images/${heroImages[current]})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
-        >
-          {/* Dark gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60"></div>
-        </motion.div>
+        {heroImages.length > 0 && (
+          <motion.div
+            key={current}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `url(${urlFor(heroImages[current]).url()})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          >
+            {/* Dark gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/60"></div>
+          </motion.div>
+        )}
       </AnimatePresence>
 
       {/* Content */}
