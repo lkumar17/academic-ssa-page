@@ -5,6 +5,7 @@ import WelcomeSection from '@/components/sections/WelcomeSection';
 import TestimonialsCarousel from '@/components/sections/TestimonialsCarousel';
 import NewsSection from '@/components/sections/NewsSection';
 import Footer from '@/components/layout/Footer';
+import ChatWidget from '@/components/ChatWidget';
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <WelcomeSection />
       <NewsSection />
       <Footer />
+      <ChatWidget />
     </>
   );
 }

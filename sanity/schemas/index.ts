@@ -15,5 +15,25 @@ import schoolInformation from './schoolInformation';
 import requiredDocument from './requiredDocument';
 import additionalInformationSection from './additionalInformationSection';
 import furtherClarifications from './furtherClarifications';
+import chatbotFaq from './chatbotFaq';
 
-export default [news, achievement, testimonial, campusInfo, heroCarousel, welcomeSection, schoolStats, aboutPageContent, principalMessage, managementTeamMember, admissionClassInfo, admissionProcessStep, admissionImportantDate, schoolInformation, requiredDocument, additionalInformationSection, furtherClarifications];
+export default [
+  news,
+  achievement,
+  testimonial,
+  campusInfo,
+  heroCarousel,
+  welcomeSection,
+  schoolStats,
+  aboutPageContent,
+  principalMessage,
+  managementTeamMember,
+  admissionClassInfo,
+  admissionProcessStep,
+  admissionImportantDate,
+  schoolInformation,
+  requiredDocument,
+  additionalInformationSection,
+  furtherClarifications,
+  chatbotFaq,
+];
