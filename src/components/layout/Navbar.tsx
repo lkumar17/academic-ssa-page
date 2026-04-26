@@ -127,7 +127,7 @@ export default function Navbar({ onApplyClick }: NavbarProps) {
               </Link>
               <Link href="/compliance" className="text-primary font-medium text-sm py-1">
                  Disclosure
-              </Link> 
+              </Link>
               <Link href="/admissions" className="block w-full text-center px-4 py-1.5 bg-accent text-white rounded font-medium mt-2">
                 Apply Now
               </Link>
