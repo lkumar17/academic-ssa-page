@@ -4,11 +4,17 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { client } from '@/lib/sanity';
+import { urlFor } from '@/lib/sanity';
 
 interface WelcomeContent {
   label: string;
   heading: string;
   paragraphs: string[];
+  image?: {
+    asset: {
+      _ref: string;
+    };
+  };
 }
 
 export default function WelcomeSection() {
@@ -22,7 +28,8 @@ export default function WelcomeSection() {
         const query = `*[_type == "welcomeSection" && isActive == true][0] {
           label,
           heading,
-          paragraphs
+          paragraphs,
+          image
         }`;
         const data = await client.fetch<WelcomeContent>(query);
         setContent(data);
@@ -73,24 +80,26 @@ export default function WelcomeSection() {
         </motion.div>
 
         {/* Right Column - Image */}
-        {/* <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="relative"
-        >
-          <div className="relative aspect-video rounded-lg overflow-hidden">
-            <div className="absolute inset-0 border-4 border-accent opacity-30 rounded-lg transform translate-x-2 translate-y-2 z-0"></div>
-            <div className="relative bg-surface rounded-lg aspect-video flex items-center justify-center text-text-muted overflow-hidden z-10">
-              <img
-                src="/images/campus-images/about-campus.jpg"
-                alt="Campus"
-                className="w-full h-full object-cover"
-              />
+        {content.image && (
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="relative"
+          >
+            <div className="relative aspect-video rounded-lg overflow-hidden">
+              <div className="absolute inset-0 border-4 border-accent opacity-30 rounded-lg transform translate-x-2 translate-y-2 z-0"></div>
+              <div className="relative bg-surface rounded-lg aspect-video flex items-center justify-center text-text-muted overflow-hidden z-10">
+                <img
+                  src={urlFor(content.image).url()}
+                  alt="Welcome Section"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
-          </div>
-        </motion.div> */}
+          </motion.div>
+        )}
       </div>
     </section>
   );
