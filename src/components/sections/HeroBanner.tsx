@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { client } from '@/lib/sanity';
@@ -18,6 +19,7 @@ interface HeroCarousel {
 }
 
 export default function HeroBanner() {
+  const router = useRouter();
   const [current, setCurrent] = useState(0);
   const [heroImages, setHeroImages] = useState<HeroImage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -51,8 +53,20 @@ export default function HeroBanner() {
     return () => clearInterval(timer);
   }, [heroImages]);
 
+  const handleApplyOnline = () => {
+    router.push('/admissions');
+  };
+
+  const handleCallUs = () => {
+    window.location.href = 'tel:+919876543210'; // Replace with actual school phone number
+  };
+
+  const handleLocateUs = () => {
+    router.push('/contact');
+  };
+
   return (
-    <div className="relative h-screen w-full overflow-hidden pt-16">
+    <div className="relative h-[60vh] md:h-screen w-full overflow-hidden pt-12 md:pt-16">
       <AnimatePresence mode="wait">
         {heroImages.length > 0 && (
           <motion.div
@@ -90,13 +104,22 @@ export default function HeroBanner() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col md:flex-row gap-4 justify-center">
-            <button className="px-8 py-3 bg-accent text-white rounded font-medium hover:bg-opacity-90 transition-all hover:scale-105">
+            <button 
+              onClick={handleApplyOnline}
+              className="px-8 py-3 bg-accent text-white rounded font-medium hover:bg-opacity-90 transition-all hover:scale-105"
+            >
               Apply Online
             </button>
-            <button className="px-8 py-3 border-2 border-white text-white rounded font-medium hover:bg-white/10 transition-all">
+            <button 
+              onClick={handleCallUs}
+              className="px-8 py-3 border-2 border-white text-white rounded font-medium hover:bg-white/10 transition-all"
+            >
               Call Us
             </button>
-            <button className="px-8 py-3 border-2 border-white text-white rounded font-medium hover:bg-white/10 transition-all">
+            <button 
+              onClick={handleLocateUs}
+              className="px-8 py-3 border-2 border-white text-white rounded font-medium hover:bg-white/10 transition-all"
+            >
               Locate Us
             </button>
           </div>
@@ -104,7 +127,7 @@ export default function HeroBanner() {
       </div>
 
       {/* Slide Indicators */}
-      <div className="absolute bottom-24 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
+      <div className="absolute bottom-12 md:bottom-24 left-1/2 transform -translate-x-1/2 flex gap-2 z-10">
         {heroImages.map((_, i) => (
           <motion.button
             key={i}

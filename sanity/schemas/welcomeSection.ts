@@ -26,6 +26,15 @@ export default {
       description: 'Array of paragraph texts for the welcome section',
     },
     {
+      name: 'image',
+      title: 'Right Side Image',
+      type: 'image',
+      options: {
+        hotspot: true,
+      },
+      description: 'Image to display on the right side of the welcome section',
+    },
+    {
       name: 'isActive',
       title: 'Active',
       type: 'boolean',
