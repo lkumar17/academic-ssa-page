@@ -1,7 +1,7 @@
 'use client';
 
 import { FormEvent, useEffect, useRef, useState } from 'react';
-import { MessageCircle, Send, X } from 'lucide-react';
+import { MessageCircle, Mic, Send, StopCircle, X } from 'lucide-react';
 
 type Message = {
   id: string;
@@ -21,7 +21,11 @@ export default function ChatWidget() {
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isRecording, setIsRecording] = useState(false);
+  const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(null);
   const [error, setError] = useState('');
+  const [recordingError, setRecordingError] = useState('');
+  const recordingChunks = useRef<BlobPart[]>([]);
   const endRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -34,14 +38,12 @@ export default function ChatWidget() {
     setMessages((prev) => [...prev, message]);
   };
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const trimmed = input.trim();
+  const handleQuestion = async (question: string) => {
+    const trimmed = question.trim();
     if (!trimmed || loading) return;
 
     setError('');
     addMessage({ id: `user-${Date.now()}`, role: 'user', content: trimmed });
-    setInput('');
     setLoading(true);
 
     try {
@@ -66,6 +68,87 @@ export default function ChatWidget() {
       });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    await handleQuestion(input);
+    setInput('');
+  };
+
+  const transcribeAudio = async (audioBlob: Blob) => {
+    setRecordingError('');
+    setLoading(true);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', audioBlob, 'voice.webm');
+
+      const response = await fetch('/api/transcribe', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (!response.ok || !data.transcript) {
+        throw new Error(data?.error || 'Transcription failed.');
+      }
+
+      const transcript = data.transcript.trim();
+      if (!transcript) {
+        throw new Error('No speech detected. Please try again.');
+      }
+
+      await handleQuestion(transcript);
+    } catch (err) {
+      setRecordingError(err instanceof Error ? err.message : 'Transcription failed.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const startRecording = async () => {
+    setRecordingError('');
+
+    if (!navigator.mediaDevices?.getUserMedia) {
+      setRecordingError('Microphone is not supported in this browser.');
+      return;
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const recorder = new MediaRecorder(stream);
+      recordingChunks.current = [];
+
+      recorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordingChunks.current.push(event.data);
+        }
+      };
+
+      recorder.onstop = async () => {
+        stream.getTracks().forEach((track) => track.stop());
+        setIsRecording(false);
+        setMediaRecorder(null);
+
+        const audioBlob = new Blob(recordingChunks.current, { type: 'audio/webm' });
+        if (audioBlob.size > 0) {
+          await transcribeAudio(audioBlob);
+        }
+      };
+
+      recorder.start();
+      setMediaRecorder(recorder);
+      setIsRecording(true);
+    } catch (err) {
+      setRecordingError('Unable to access the microphone. Please check your permissions.');
+    }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.stop();
     }
   };
 
@@ -108,22 +191,36 @@ export default function ChatWidget() {
             </div>
             <form onSubmit={handleSubmit} className="bg-white p-4">
               <div className="flex items-center gap-2 rounded-3xl border border-slate-200 bg-slate-100 px-3 py-2 shadow-inner shadow-slate-200/40">
+                <button
+                  type="button"
+                  onClick={isRecording ? stopRecording : startRecording}
+                  className={`inline-flex h-12 w-12 items-center justify-center rounded-2xl transition ${
+                    isRecording
+                      ? 'bg-rose-500 text-white hover:bg-rose-600'
+                      : 'bg-white text-slate-900 hover:bg-slate-200'
+                  }`}
+                  aria-label={isRecording ? 'Stop recording' : 'Record voice'}
+                  title={isRecording ? 'Stop recording' : 'Record voice'}
+                >
+                  {isRecording ? <StopCircle size={18} /> : <Mic size={18} />}
+                </button>
                 <input
                   value={input}
                   onChange={(event) => setInput(event.target.value)}
                   placeholder="Ask a question..."
                   className="flex-1 bg-transparent text-sm text-slate-900 outline-none placeholder:text-slate-400"
-                  disabled={loading}
+                  disabled={loading || isRecording}
                 />
                 <button
                   type="submit"
-                  disabled={loading || !input.trim()}
+                  disabled={loading || !input.trim() || isRecording}
                   className="inline-flex h-12 min-w-[52px] items-center justify-center rounded-2xl bg-slate-950 px-4 text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   <Send size={18} />
                 </button>
               </div>
               {error ? <p className="mt-3 text-xs text-red-600">{error}</p> : null}
+              {recordingError ? <p className="mt-3 text-xs text-rose-600">{recordingError}</p> : null}
             </form>
           </div>
         </div>
