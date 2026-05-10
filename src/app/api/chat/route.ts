@@ -36,8 +36,10 @@ export async function POST(request: Request) {
 
   const faqContext = faqData
     .map(
-      (faq: { category?: string; question: string; answer: string }, index: number) =>
-        `FAQ ${index + 1}${faq.category ? ` [${faq.category}]` : ''}\nQ: ${faq.question}\nA: ${faq.answer}`
+      (faq: { category?: string; question: string; answer: string; keywords?: string[] }, index: number) => {
+        const keywordList = Array.isArray(faq.keywords) && faq.keywords.length ? `\nKeywords: ${faq.keywords.join(', ')}` : '';
+        return `FAQ ${index + 1}${faq.category ? ` [${faq.category}]` : ''}\nQ: ${faq.question}\nA: ${faq.answer}${keywordList}`;
+      }
     )
     .join('\n\n');
 
