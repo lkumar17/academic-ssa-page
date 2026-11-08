@@ -88,13 +88,12 @@ export default function WelcomeSection() {
             viewport={{ once: true }}
             className="relative"
           >
-            <div className="relative aspect-video rounded-lg overflow-hidden">
-              <div className="absolute inset-0 border-4 border-accent opacity-30 rounded-lg transform translate-x-2 translate-y-2 z-0"></div>
-              <div className="relative bg-surface rounded-lg aspect-video flex items-center justify-center text-text-muted overflow-hidden z-10">
+            <div className="relative rounded-lg">
+              <div className="relative bg-surface rounded-lg overflow-hidden z-10">
                 <img
                   src={urlFor(content.image).url()}
                   alt="Welcome Section"
-                  className="w-full h-full object-cover"
+                  className="block w-full h-auto object-contain"
                 />
               </div>
             </div>

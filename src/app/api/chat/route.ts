@@ -9,7 +9,7 @@ const sanityClient = createClient({
 });
 
 const GROQ_API_KEY = process.env.GROQ_API_KEY;
-const GROQ_MODEL = 'llama-3.1-8b-instant';
+const GROQ_MODEL = process.env.GROQ_API_MODEL;
 
 export async function POST(request: Request) {
   if (!GROQ_API_KEY) {
